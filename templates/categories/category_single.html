@@ -1,0 +1,15 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {{ block.super }} | {{ category.name }}
+{% endblock %}
+
+{% block content %}
+    <div class="container mt-5">
+        <h1>{{ category.name|capfirst }}</h1>
+        <p class="mb-5">{{ category.description }}</p>
+        {% for post in category.category_posts %}
+            {% include 'posts/post_block.html' with post=post %}
+        {% endfor %}
+    </div>
+{% endblock %}

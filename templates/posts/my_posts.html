@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {{ block.super }} | My Posts
+{% endblock %}
+
+{% block content %}
+    <div class="container mt-5">
+        <h1>My Posts <a href="{% url 'posts:post_add' %}" class="btn btn-success float-right">Add new</a></h1>
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-{{ message.tags }} text-center" role="alert">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+        {% for post in posts %}
+            <div class="card mt-3">
+                {% if post.is_active %}
+                    <div class="card-header text-white bg-success text-right">Active</div>
+                {% else %}
+                    <div class="card-header text-right">Inactive</div>
+                {% endif %}
+                <div class="card-body">
+                    <div class="row">
+                        <div class="col-4">
+                            <a href="{{ post.get_absolute_url }}">
+                                <img class="img-preview" src="{% if post.img_small %}{{ post.img_small.url }}{% else %}https://dummyimage.com/340x220/b3b3b3/ffffff&text=no+photo {% endif %}" alt="">
+                            </a>
+                        </div>
+                        <div class="col-8">
+                            <a href="{{ post.get_absolute_url }}">
+                                <h5 class="card-title">{{ post.name }}</h5>
+                            </a>
+                            <p>{{ post.text|truncatewords_html:30|striptags }}</p>
+                            <p class="card-text mb-0">
+                                <small class="text-muted"><b>category:</b> {{ post.category.name }}</small>
+                            </p>
+                            <p class="card-text">
+                                <small class="text-muted"><b>added:</b> {{ post.created|date:"d.m.Y" }}</small>
+                            </p>
+                            <form action="{% url 'posts:post_delete' post.slug %}" method="post" class="d-inline-block">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger">Delete</button>
+                            </form>
+                            <a href="{% url 'posts:post_edit' post.slug %}" class="btn btn-primary">Edit</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% empty %}
+            You don't have any posts yet...
+        {% endfor %}
+    </div>
+{% endblock %}

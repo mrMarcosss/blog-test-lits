@@ -1,0 +1,23 @@
+<div class="card mt-3">
+    <div class="card-body">
+        <div class="row">
+            <div class="col-4">
+                <a href="{{ post.get_absolute_url }}">
+                    <img class="img-preview" src="{% if post.img_small %}{{ post.img_small.url }}{% else %}https://dummyimage.com/340x220/b3b3b3/ffffff&text=no+photo {% endif %}" alt="">
+                </a>
+            </div>
+            <div class="col-8">
+                <a href="{{ post.get_absolute_url }}">
+                    <h5 class="card-title">{{ post.name }}</h5>
+                </a>
+                <p>{{ post.text|truncatewords_html:30|striptags }}</p>
+                <p class="card-text">
+                    <small class="text-muted"><b>added:</b> {{ post.created|date:"d.m.Y" }}</small>
+                </p>
+                <p class="card-text">
+                    <small class="text-muted"><b>by user:</b> {{ post.user.username }}</small>
+                </p>
+            </div>
+        </div>
+    </div>
+</div>

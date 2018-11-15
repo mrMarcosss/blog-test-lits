@@ -1,0 +1,40 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {{ block.super }} | {{ post.name|capfirst }}
+{% endblock %}
+
+{% block content %}
+    <div class="container mt-5">
+        <div class="row">
+            <div class="col-8">
+                <h1>{{ post.name|capfirst }} {% if not post.is_active %}<span class="text-muted">(Preview)</span>{% endif %}</h1>
+                <span class="mb-3 d-inline-block text-muted">Category: <a href="{{ post.category.get_absolute_url }}">{{ post.category.name }}</a></span>
+                {% if post.img_big %}
+                    <img src="{{ post.img_big.url }}" alt="">
+                {% endif %}
+                <p class="mt-4">{{ post.text|safe }}</p>
+            </div>
+            <div class="col-3 ml-auto">
+                {% if others %}
+                    <h1 class="text-right">Others</h1>
+                {% endif %}
+                {% for other_post in others %}
+                    <div class="card mb-4 shadow-sm">
+                        <img style="height: 150px;"
+                             src="{% if other_post.img_small %}{{ other_post.img_small.url }}{% else %}
+                                https://dummyimage.com/340x220/b3b3b3/ffffff&text=no+photo
+                            {% endif %}"
+                         alt="">
+                        <div class="card-body">
+                            <a href="{{ other_post.get_absolute_url }}">
+                                <h5 class="card-title">{{ other_post.name|capfirst|truncatewords:6 }}</h5>
+                            </a>
+                            <p class="card-text">{{ other_post.text|truncatewords_html:10|striptags }}</p>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

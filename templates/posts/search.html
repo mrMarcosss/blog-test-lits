@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {{ block.super }} | Search
+{% endblock %}
+
+{% block content %}
+    <div class="container mt-5">
+        <h1>Search</h1>
+        {% for post in result %}
+            {% include 'posts/post_block.html' with post=post %}
+        {% empty %}
+            {% if q %}
+                <h4 class="mt-3">No results found for <b>{{ q }}</b>...</h4>
+            {% else %}
+                <h4 class="mt-3">No results...</h4>
+            {% endif %}
+        {% endfor %}
+    </div>
+{% endblock %}
